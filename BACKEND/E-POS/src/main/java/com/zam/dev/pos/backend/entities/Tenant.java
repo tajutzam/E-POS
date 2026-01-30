@@ -1,5 +1,6 @@
 package com.zam.dev.pos.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,5 +26,6 @@ public class Tenant {
     private String name;
 
     @OneToMany(mappedBy = "tenant")
+    @JsonIgnore
     private List<User> users;
 }

@@ -1,5 +1,7 @@
 package com.zam.dev.pos.backend.configs;
 
+import com.zam.dev.pos.backend.entities.Role;
+import com.zam.dev.pos.backend.entities.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,6 +45,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+
+            if (userDetails instanceof User user) { // Pattern Matching (Java 16+)
+                if (user.getRole() == Role.CASHIER && user.getTenant() == null) {
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"success\": false, \"message\": \"Cashier must be assigned to a tenant\"}");
+                    return;
+                }
+            }
+
 
             if (jwtService.isTokenValid(jwt, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
