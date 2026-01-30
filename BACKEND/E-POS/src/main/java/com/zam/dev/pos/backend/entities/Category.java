@@ -47,4 +47,10 @@ public class Category {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tenant_id", nullable = false)
+    private Tenant tenant;
+
+
 }

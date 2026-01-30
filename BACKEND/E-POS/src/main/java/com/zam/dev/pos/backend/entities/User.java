@@ -89,4 +89,9 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tenant_id", nullable = false)
+    private Tenant tenant;
+
 }

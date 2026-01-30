@@ -5,6 +5,7 @@ import com.zam.dev.pos.backend.dto.AuthResponse;
 import com.zam.dev.pos.backend.dto.WebResponse;
 import com.zam.dev.pos.backend.entities.User;
 import com.zam.dev.pos.backend.services.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<WebResponse<String>> register(@RequestBody AuthRequest request) {
+    public ResponseEntity<WebResponse<String>> register(@Valid @RequestBody AuthRequest request) {
         try {
             User user = authService.register(request);
             return ResponseEntity.ok(WebResponse.<String>builder()
@@ -36,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<WebResponse<AuthResponse>> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<WebResponse<AuthResponse>> login(@Valid @RequestBody AuthRequest request) {
         try {
             AuthResponse response = authService.login(request);
             return ResponseEntity.ok(WebResponse.<AuthResponse>builder()

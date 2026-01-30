@@ -13,8 +13,13 @@ import {
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar"
+import { useAuth } from '@/contexts/AuthContext';
 
 export function Header() {
+
+    const { user, logout } = useAuth();
+
+
     return (
         <header className="flex h-16 shrink-0 items-center justify-between border-b px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2">
@@ -38,9 +43,9 @@ export function Header() {
                     <DropdownMenuContent align="end" className="w-56 mt-2 shadow-lg">
                         <DropdownMenuLabel className="font-normal">
                             <div className="flex flex-col space-y-1 py-1">
-                                <p className="text-sm font-semibold leading-none">Administrator</p>
+                                <p className="text-sm font-semibold leading-none">{user?.role}</p>
                                 <p className="text-xs leading-none text-muted-foreground">
-                                    admin@example.com
+                                    {user?.email}
                                 </p>
                             </div>
                         </DropdownMenuLabel>
@@ -60,8 +65,10 @@ export function Header() {
                         <DropdownMenuSeparator />
 
                         <DropdownMenuItem className="cursor-pointer text-destructive focus:bg-destructive/10 focus:text-destructive">
-                            <LogOut className="mr-2 size-4" />
-                            <span>Log out</span>
+                            <button onClick={logout} className='flex items-center'>
+                                <LogOut className="mr-2 size-4" />
+                                <span>Log out</span>
+                            </button>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
