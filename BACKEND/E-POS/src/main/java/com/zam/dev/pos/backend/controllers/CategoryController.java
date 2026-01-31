@@ -1,6 +1,7 @@
 package com.zam.dev.pos.backend.controllers;
 
 import com.zam.dev.pos.backend.dto.CategoryRequest;
+import com.zam.dev.pos.backend.dto.CategoryResponse;
 import com.zam.dev.pos.backend.dto.WebResponse;
 import com.zam.dev.pos.backend.entities.Category;
 import com.zam.dev.pos.backend.entities.User;
@@ -21,16 +22,23 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<WebResponse<Category>> create(
+    public ResponseEntity<WebResponse<CategoryResponse>> create(
             @Valid @ModelAttribute CategoryRequest request,
             @AuthenticationPrincipal User currentUser
     ) {
         Category category = categoryService.create(request, currentUser.getTenant());
+
+
+        CategoryResponse response = CategoryResponse.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .build();
+
         return ResponseEntity.ok(
-                WebResponse.<Category>builder()
+                WebResponse.<CategoryResponse>builder()
                         .success(true)
                         .message("Category created successfully")
-                        .data(category)
+                        .data(response)
                         .build()
         );
     }

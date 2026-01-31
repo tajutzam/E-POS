@@ -35,7 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
             Category category = Category.builder()
                     .name(request.getName())
                     .image(fileName)
-                    .tenant(tenant) // PENTING: Harus di-set agar nyantol ke tenant
+                    .tenant(tenant)
                     .build();
 
             return categoryRepository.save(category);

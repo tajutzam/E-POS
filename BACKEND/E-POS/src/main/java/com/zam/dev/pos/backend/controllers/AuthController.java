@@ -26,7 +26,7 @@ public class AuthController {
             return ResponseEntity.ok(WebResponse.<String>builder()
                     .success(true)
                     .message("User berhasil didaftarkan")
-                    .data(user.getUuid()) // Hanya kirim UUID sebagai data
+                    .data(user.getUuid())
                     .build());
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(WebResponse.<String>builder()

@@ -23,14 +23,12 @@ public class ApplicationConfig {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 
-    // Cukup sediakan PasswordEncoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // Spring secara otomatis akan mencari Bean UserDetailsService
-    // dan PasswordEncoder di atas untuk dikonfigurasi ke dalam AuthenticationManager
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
