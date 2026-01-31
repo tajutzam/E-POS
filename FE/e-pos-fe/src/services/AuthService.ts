@@ -9,6 +9,11 @@ export class AuthService {
     return response.data;
   }
 
+  static async register(credentials: any) {
+    const response = await api.post('/auth/register', credentials)
+    return response.data
+  }
+
   static logout() {
     localStorage.removeItem('token');
     window.location.href = '/login';

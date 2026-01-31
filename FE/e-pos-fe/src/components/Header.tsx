@@ -28,7 +28,6 @@ export function Header() {
                 <span className="text-sm font-medium">E POS</span>
             </div>
 
-            {/* Kanan: User Profile */}
             <div className="flex items-center gap-4">
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
