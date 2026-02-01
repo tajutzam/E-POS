@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -54,18 +55,12 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<WebResponse<User>> getMyProfile(Authentication authentication) {
+    public ResponseEntity<WebResponse<User>> getMyProfile(@AuthenticationPrincipal User currentUser) {
         try {
-            if (authentication == null) throw new RuntimeException("Unauthorized");
-
-            String email = authentication.getName();
-            User user = authService.getProfile(email);
-            user.setPassword(null);
-
             return ResponseEntity.ok(WebResponse.<User>builder()
                     .success(true)
                     .message("Data Profile Berhasil Diambil")
-                    .data(user)
+                    .data(currentUser)
                     .build());
         } catch (RuntimeException e) {
             System.out.println(e.getMessage());

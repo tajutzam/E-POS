@@ -54,6 +54,12 @@ public class Product {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "tenant_id", nullable = false)
+    private Tenant tenant;
+
     @PrePersist
     protected void onCreate() {
         if (this.uuid == null) this.uuid = UUID.randomUUID().toString();

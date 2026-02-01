@@ -28,4 +28,15 @@ public class Tenant {
     @OneToMany(mappedBy = "tenant")
     @JsonIgnore
     private List<User> users;
+
+
+    @OneToMany(mappedBy = "tenant")
+    @JsonIgnore
+    private List<Category> categories;
+
+    @OneToMany(mappedBy = "tenant")
+    @JsonIgnore
+    private List<Product> products;
+
+
 }

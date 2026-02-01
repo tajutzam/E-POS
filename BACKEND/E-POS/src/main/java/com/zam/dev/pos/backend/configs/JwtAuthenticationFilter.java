@@ -46,7 +46,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-            if (userDetails instanceof User user) { // Pattern Matching (Java 16+)
+            if (userDetails instanceof User user) {
                 if (user.getRole() == Role.CASHIER && user.getTenant() == null) {
                     response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                     response.setContentType("application/json");

@@ -1,6 +1,7 @@
 package com.zam.dev.pos.backend.exceptions;
 
 import com.zam.dev.pos.backend.dto.WebResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,4 +39,26 @@ public class GlobalExceptionHandler {
                         .build()
         );
     }
+
+
+    @ExceptionHandler(NotFoundExceptionCustom.class)
+    public ResponseEntity<WebResponse<String>> handleNotFoundException(NotFoundExceptionCustom ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                WebResponse.<String>builder()
+                        .success(false)
+                        .message(ex.getMessage())
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<WebResponse<String>> handleConflictException(ConflictException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                WebResponse.<String>builder()
+                        .success(false)
+                        .message(ex.getMessage())
+                        .build()
+        );
+    }
+
 }

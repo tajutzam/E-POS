@@ -1,6 +1,9 @@
 package com.zam.dev.pos.backend.repositories;
 
 import com.zam.dev.pos.backend.entities.Product;
+import com.zam.dev.pos.backend.entities.Tenant;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,5 +18,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByNameContainingIgnoreCase(String name);
 
-    List<Product> findByStockLessThan(Integer stock);
+
+    List<Product> findByTenant(Tenant tenant);
+
+
+    Optional<Product> findByUuidAndTenant(String uuid, Tenant tenant);
+
+    Page<Product> findAllByTenant(Tenant tenant, Pageable pageable);
 }

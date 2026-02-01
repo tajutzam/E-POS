@@ -26,4 +26,15 @@ public class FileUpload {
         }
     }
 
+    public static void deleteFile(String uploadDir, String fileName) {
+        if (fileName == null || fileName.isEmpty()) return;
+
+        try {
+            Path path = Paths.get(uploadDir).resolve(fileName);
+            Files.deleteIfExists(path);
+        } catch (IOException e) {
+            System.err.println("Gagal menghapus file: " + e.getMessage());
+        }
+    }
+
 }
