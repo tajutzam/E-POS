@@ -76,11 +76,9 @@ const CategoryEditPage: React.FC = () => {
     }
 
     return (
-        <div className="p-6 max-w-2xl mx-auto">
+        <div className="p-6 mx-auto">
             <div className="flex items-center gap-4 mb-8">
-                <Button variant="ghost" size="icon" onClick={() => navigate(-1)} className="rounded-full">
-                    <ArrowLeft className="h-5 w-5" />
-                </Button>
+                
                 <div>
                     <h1 className="text-2xl font-bold text-dark">Edit Kategori</h1>
                     <p className="text-sm text-muted-foreground">Perbarui informasi kategori produk Anda</p>

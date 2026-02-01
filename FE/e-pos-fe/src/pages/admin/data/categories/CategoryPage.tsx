@@ -53,7 +53,7 @@ const CategoryPage: React.FC = () => {
             text: `Category "${name}" will be permanently deleted!`,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#6B7280', // Gray-500 matching your theme
+            confirmButtonColor: '#6B7280',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes, delete it!',
             cancelButtonText: 'Cancel'

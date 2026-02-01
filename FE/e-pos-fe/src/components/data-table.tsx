@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Search, Download, Loader2 } from "lucide-react"
+import { Search, Loader2, ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 import {
     Select,
     SelectContent,
@@ -17,10 +17,12 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { cn } from "@/lib/utils"
 
 export interface DataTableColumn {
     key: string
     label: string
+    className?: string
     render?: (value: any, row: any, index: number) => React.ReactNode
 }
 
@@ -32,7 +34,7 @@ interface DataTableProps {
     pageSize: number
     currentPage: number
     onPageChange: (page: number) => void
-    onPageSizeChange?: (size: number) => void // Prop baru
+    onPageSizeChange?: (size: number) => void
     onSearch?: (value: string) => void
     isLoading?: boolean
 }
@@ -53,23 +55,52 @@ export function DataTable({
 
     return (
         <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row items-center justify-end gap-4">
-                <div className="relative w-full sm:max-w-sm">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            {/* Header Section */}
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="relative w-full sm:max-w-sm group">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 group-focus-within:text-slate-900 transition-colors" />
                     <Input
-                        placeholder={`Cari berdasarkan ${searchKey}...`}
+                        placeholder={`Cari ${searchKey}...`}
                         onChange={(e) => onSearch?.(e.target.value)}
-                        className="pl-10"
+                        className="pl-9 bg-white border-slate-200 focus-visible:ring-slate-400 h-10 transition-all shadow-sm"
                     />
                 </div>
+
+                {onPageSizeChange && (
+                    <div className="flex items-center gap-2 text-sm font-medium text-slate-600">
+                        <span>Tampilkan</span>
+                        <Select
+                            value={pageSize.toString()}
+                            onValueChange={(value) => onPageSizeChange?.(Number(value))}
+                        >
+                            <SelectTrigger className="h-10 w-[70px] border-slate-200 focus:ring-slate-400">
+                                <SelectValue placeholder={pageSize.toString()} />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {[5, 10, 20, 50].map((size) => (
+                                    <SelectItem key={size} value={size.toString()}>
+                                        {size}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                )}
             </div>
 
-            <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+            {/* Table Section */}
+            <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">
                 <Table>
-                    <TableHeader className="bg-muted/50">
-                        <TableRow>
+                    <TableHeader className="bg-slate-50/50">
+                        <TableRow className="hover:bg-transparent border-slate-200">
                             {columns.map((col) => (
-                                <TableHead key={col.key} className="font-semibold py-4 text-dark text-nowrap">
+                                <TableHead
+                                    key={col.key}
+                                    className={cn(
+                                        "h-12 px-4 text-xs font-bold uppercase tracking-wider text-slate-500",
+                                        col.className
+                                    )}
+                                >
                                     {col.label}
                                 </TableHead>
                             ))}
@@ -78,29 +109,36 @@ export function DataTable({
                     <TableBody>
                         {isLoading ? (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="h-40 text-center">
-                                    <div className="flex flex-col items-center justify-center gap-2">
-                                        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                                        <p className="text-sm text-muted-foreground">Memuat data...</p>
+                                <TableCell colSpan={columns.length} className="h-64 text-center">
+                                    <div className="flex flex-col items-center justify-center gap-3">
+                                        <Loader2 className="h-10 w-10 animate-spin text-slate-400" />
+                                        <p className="text-sm font-medium text-slate-500 italic">Sedang menyinkronkan data...</p>
                                     </div>
                                 </TableCell>
                             </TableRow>
                         ) : data.length > 0 ? (
                             data.map((row, rowIndex) => (
-                                <TableRow key={rowIndex} className="hover:bg-muted/30 transition-colors">
+                                <TableRow
+                                    key={rowIndex}
+                                    className="hover:bg-slate-50/80 transition-all border-slate-100 last:border-0"
+                                >
                                     {columns.map((col) => (
-                                        <TableCell key={col.key} className="py-3">
+                                        <TableCell key={col.key} className="py-4 px-4 text-sm text-slate-700 font-medium">
                                             {col.render
                                                 ? col.render(row[col.key], row, rowIndex + (currentPage * pageSize))
-                                                : row[col.key]}
+                                                : (row[col.key] ?? "-")}
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={columns.length} className="h-32 text-center text-muted-foreground">
-                                    Tidak ada data ditemukan.
+                                <TableCell colSpan={columns.length} className="h-48 text-center">
+                                    <div className="flex flex-col items-center justify-center text-slate-400 gap-1">
+                                        <Search className="h-8 w-8 mb-2 opacity-20" />
+                                        <p className="text-base font-medium">Data Kosong</p>
+                                        <p className="text-sm italic">Tidak ada informasi yang dapat ditampilkan.</p>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         )}
@@ -108,58 +146,43 @@ export function DataTable({
                 </Table>
             </div>
 
-            {/* Pagination Controls */}
+            {/* Pagination Section */}
             {totalPages > 0 && (
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-2 px-1">
-                    <div className="flex items-center gap-4">
-                        <p className="text-sm text-muted-foreground">
-                            Total <span className="font-medium">{totalElements}</span> data
-                        </p>
-
-                        {/* Page Size Filter */}
-                        <div className="flex items-center gap-2">
-                            <p className="text-sm text-muted-foreground">Baris:</p>
-                            <Select
-                                value={pageSize.toString()}
-                                onValueChange={(value) => onPageSizeChange?.(Number(value))}
-                            >
-                                <SelectTrigger className="h-8 w-[70px]">
-                                    <SelectValue placeholder={pageSize.toString()} />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {[5, 10, 20, 50].map((size) => (
-                                        <SelectItem key={size} value={size.toString()}>
-                                            {size}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+                    <div className="text-sm text-slate-500">
+                        Menampilkan <span className="font-semibold text-slate-900">{data.length}</span> dari{" "}
+                        <span className="font-semibold text-slate-900">{totalElements}</span> baris
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
                         <Button
                             variant="outline"
-                            size="sm"
+                            size="icon"
                             disabled={currentPage === 0 || isLoading}
                             onClick={() => onPageChange(currentPage - 1)}
-                            className="h-8 w-20"
+                            className="h-9 w-9 rounded-lg border-slate-200 hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40"
                         >
-                            Previous
+                            <ChevronLeft className="h-4 w-4" />
                         </Button>
 
-                        <div className="flex items-center justify-center text-sm font-medium px-4 h-8 border rounded-md bg-muted/20">
-                            {currentPage + 1} / {totalPages}
+                        <div className="flex items-center gap-1">
+                            {/* Simple Page Indicator */}
+                            <div className="flex items-center justify-center h-9 px-4 rounded-lg bg-slate-900 text-white text-xs font-bold shadow-sm">
+                                {currentPage + 1}
+                            </div>
+                            <div className="flex items-center justify-center h-9 px-3 text-slate-400 text-xs font-medium">
+                                dari {totalPages}
+                            </div>
                         </div>
 
                         <Button
                             variant="outline"
-                            size="sm"
+                            size="icon"
                             disabled={currentPage + 1 >= totalPages || isLoading}
                             onClick={() => onPageChange(currentPage + 1)}
-                            className="h-8 w-20"
+                            className="h-9 w-9 rounded-lg border-slate-200 hover:bg-slate-50 hover:text-slate-900 disabled:opacity-40"
                         >
-                            Next
+                            <ChevronRight className="h-4 w-4" />
                         </Button>
                     </div>
                 </div>
