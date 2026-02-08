@@ -55,16 +55,8 @@ export function DataTable({
 
     return (
         <div className="space-y-4">
-            {/* Header Section */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="relative w-full sm:max-w-sm group">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 group-focus-within:text-slate-900 transition-colors" />
-                    <Input
-                        placeholder={`Cari ${searchKey}...`}
-                        onChange={(e) => onSearch?.(e.target.value)}
-                        className="pl-9 bg-white border-slate-200 focus-visible:ring-slate-400 h-10 transition-all shadow-sm"
-                    />
-                </div>
+               
 
                 {onPageSizeChange && (
                     <div className="flex items-center gap-2 text-sm font-medium text-slate-600">

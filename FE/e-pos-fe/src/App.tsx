@@ -16,6 +16,7 @@ import CategoryCreatePage from "./pages/admin/data/categories/CategoryCreatePage
 import CategoryEditPage from "./pages/admin/data/categories/CategoryEditPage"
 import ProductCreatePage from "./pages/admin/data/products/ProductCreatePage"
 import ProductUpdatePage from "./pages/admin/data/products/ProductEditPage"
+import TransactionReceiptPage from "./pages/transactions/TransactionReceiptPage"
 
 function App() {
   return (
@@ -43,11 +44,17 @@ function App() {
             <Route path="cashier" element={<CashierPage />} />
             <Route path="history" element={<HistoryTransactionPage />} />
 
+
             <Route path="/settings" element={<div>Settings Page</div>} />
           </Route>
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        <Route
+          path="/transactions/:uuid/receipt"
+          element={<TransactionReceiptPage />}
+        />
 
       </Routes>
     </AuthProvider>

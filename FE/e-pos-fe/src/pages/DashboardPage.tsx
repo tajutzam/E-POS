@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Card,
     CardContent,
@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/card";
 import {
     TrendingUp,
-    Users,
     Package,
     DollarSign,
     ShoppingCart,
@@ -17,50 +16,76 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { DashboardService } from "@/services/DashboardService";
+import { formatRupiah } from "@/utils/helper";
 
 const DashboardPage = () => {
-    // State simulasi untuk data statistik
-    const [stats, setStats] = useState([
+
+    const [data, setData] = useState({
+        orders: 0,
+        totalProduct: 0,
+        totalRevenue: 0,
+        productLowStock: 0
+    })
+
+
+    const stats = [
         {
             title: "Total Revenue",
-            value: "Rp 12.500.000",
+            value: formatRupiah(data.totalRevenue),
             icon: DollarSign,
-            desc: "+12% from last month",
+            desc: "From all transactions",
             trend: "up"
         },
         {
             title: "Orders",
-            value: "+573",
+            value: data.orders.toLocaleString("id-ID"),
             icon: ShoppingCart,
-            desc: "+201 since yesterday",
+            desc: "Total orders",
             trend: "up"
         },
         {
             title: "Products",
-            value: "142",
+            value: data.totalProduct.toString(),
             icon: Package,
-            desc: "24 low in stock",
+            desc: "Available products",
             trend: "down"
-        },
-        {
-            title: "Active Users",
-            value: "12",
-            icon: Users,
-            desc: "Online right now",
-            trend: "up"
-        },
-    ]);
+        }
+    ];
+
+
+
+    const fetchData = async () => {
+        try {
+            const response = await DashboardService.getData();
+
+            if (response.success && response.data) {
+                setData({
+                    orders: response.data.orders,
+                    totalProduct: response.data.totalProduct,
+                    totalRevenue: response.data.totalRevenue,
+                    productLowStock: response.data.productLowStock
+                });
+            }
+        } catch (error) {
+            console.error("Failed to fetch dashboard data", error);
+        }
+    };
+
+
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     return (
         <div className="p-6 space-y-8 animate-in fade-in duration-500">
-            {/* Header Section */}
             <div className="flex flex-col gap-2">
                 <h1 className="text-3xl font-bold tracking-tight text-slate-900">Dashboard Overview</h1>
                 <p className="text-slate-500 italic text-sm">Welcome back! Here's what's happening with your store today.</p>
             </div>
 
-            {/* Stats Cards Grid */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-3">
                 {stats.map((stat, i) => (
                     <Card key={i} className="border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                         <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
@@ -119,7 +144,6 @@ const DashboardPage = () => {
                     </CardContent>
                 </Card>
 
-                {/* Popular Products / Categories Card */}
                 <Card className="col-span-3 border-slate-200 shadow-sm">
                     <CardHeader>
                         <CardTitle className="text-lg">Inventory Status</CardTitle>
@@ -131,7 +155,7 @@ const DashboardPage = () => {
                                 <Package className="h-5 w-5 text-amber-500" />
                                 <span className="text-sm font-medium">Low Stock Items</span>
                             </div>
-                            <span className="text-sm font-bold bg-amber-100 text-amber-700 px-2 py-1 rounded">12</span>
+                            <span className="text-sm font-bold bg-amber-100 text-amber-700 px-2 py-1 rounded">{data.productLowStock}</span>
                         </div>
                         <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
                             <div className="flex items-center gap-3">

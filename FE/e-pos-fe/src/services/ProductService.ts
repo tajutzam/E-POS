@@ -15,6 +15,25 @@ export class ProductService {
         return response.data.data;
     }
 
+    static async getAllInCashier(
+        page: number,
+        size = 10,
+        currentSearch?: string,
+        categoryUuid?: string
+    ) {
+        const response = await api.get("/products/data/cashier", {
+            params: {
+                page,
+                size,
+                search: currentSearch || undefined,
+                category: categoryUuid || undefined,
+            },
+        });
+
+        return response.data;
+    }
+
+
     static async getByUuid(uuid: string) {
         const response = await api.get(`/products/${uuid}`);
         return response.data.data;
