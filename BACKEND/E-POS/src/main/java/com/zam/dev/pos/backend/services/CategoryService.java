@@ -1,11 +1,9 @@
 package com.zam.dev.pos.backend.services;
 
-import com.zam.dev.pos.backend.dto.CategoryRequest;
+import com.zam.dev.pos.backend.dto.requests.CategoryRequest;
 import com.zam.dev.pos.backend.entities.Category;
 import com.zam.dev.pos.backend.entities.Tenant;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 public interface CategoryService {
 

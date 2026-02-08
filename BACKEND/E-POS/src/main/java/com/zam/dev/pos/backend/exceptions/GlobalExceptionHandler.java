@@ -1,6 +1,6 @@
 package com.zam.dev.pos.backend.exceptions;
 
-import com.zam.dev.pos.backend.dto.WebResponse;
+import com.zam.dev.pos.backend.dto.responses.WebResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,6 +25,19 @@ public class GlobalExceptionHandler {
                 WebResponse.<Map<String, String>>builder()
                         .success(false)
                         .message("Validation Failed")
+                        .data(errors)
+                        .build()
+        );
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<WebResponse<Map<String, String>>> handleBadRequestExceptions(BadRequestException ex) {
+        Map<String, String> errors = new HashMap<>();
+
+        return ResponseEntity.badRequest().body(
+                WebResponse.<Map<String, String>>builder()
+                        .success(false)
+                        .message(ex.getMessage())
                         .data(errors)
                         .build()
         );

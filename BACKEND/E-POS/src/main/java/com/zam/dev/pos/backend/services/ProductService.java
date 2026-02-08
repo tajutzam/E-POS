@@ -1,13 +1,12 @@
 package com.zam.dev.pos.backend.services;
 
 
-import com.zam.dev.pos.backend.dto.CategoryRequest;
-import com.zam.dev.pos.backend.dto.ProductRequest;
-import com.zam.dev.pos.backend.dto.ProductResponse;
-import com.zam.dev.pos.backend.entities.Category;
+import com.zam.dev.pos.backend.dto.requests.ProductRequest;
+import com.zam.dev.pos.backend.dto.responses.ProductResponse;
 import com.zam.dev.pos.backend.entities.Product;
 import com.zam.dev.pos.backend.entities.Tenant;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
 
@@ -20,5 +19,13 @@ public interface ProductService {
     ProductResponse update(String uuid, ProductRequest request, Tenant tenant);
 
     void delete(String uuid, Tenant tenant);
+
+    long countByTenant(Tenant tenant);
+
+    long countByStockLessAndTenant(Tenant tenant);
+
+
+    Page<Product> findAllInCashier(Tenant tenant, String search, String categoryUuid, Pageable pageable);
+
 
 }

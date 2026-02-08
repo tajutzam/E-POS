@@ -1,7 +1,7 @@
 package com.zam.dev.pos.backend.services;
 
-import com.zam.dev.pos.backend.dto.AuthRequest;
-import com.zam.dev.pos.backend.dto.AuthResponse;
+import com.zam.dev.pos.backend.dto.requests.AuthRequest;
+import com.zam.dev.pos.backend.dto.responses.AuthResponse;
 import com.zam.dev.pos.backend.entities.User;
 
 public interface AuthService {

@@ -1,6 +1,6 @@
 package com.zam.dev.pos.backend.services.impl;
 
-import com.zam.dev.pos.backend.dto.CategoryRequest;
+import com.zam.dev.pos.backend.dto.requests.CategoryRequest;
 import com.zam.dev.pos.backend.entities.Category;
 import com.zam.dev.pos.backend.entities.Tenant;
 import com.zam.dev.pos.backend.repositories.CategoryRepository;

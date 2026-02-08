@@ -1,15 +1,16 @@
 package com.zam.dev.pos.backend.controllers;
 
 
-import com.zam.dev.pos.backend.dto.ProductRequest;
-import com.zam.dev.pos.backend.dto.ProductResponse;
-import com.zam.dev.pos.backend.dto.WebResponse;
+import com.zam.dev.pos.backend.dto.requests.ProductRequest;
+import com.zam.dev.pos.backend.dto.responses.ProductResponse;
+import com.zam.dev.pos.backend.dto.responses.WebResponse;
 import com.zam.dev.pos.backend.entities.Product;
 import com.zam.dev.pos.backend.entities.User;
 import com.zam.dev.pos.backend.services.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -72,6 +73,48 @@ public class ProductController {
                         .success(true)
                         .message("Fetch products success")
                         .data(responsePage)
+                        .build()
+        );
+    }
+
+
+    @GetMapping("/data/cashier")
+    public ResponseEntity<WebResponse<Page<ProductResponse>>> getAllCashier(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String category,
+            Pageable pageable,
+            @AuthenticationPrincipal User currentUser
+    ) {
+
+        Page<ProductResponse> page = productService
+                .findAllInCashier(currentUser.getTenant(), search, category, pageable)
+                .map(product -> ProductResponse.builder()
+                        .id(product.getId())
+                        .uuid(product.getUuid())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .stock(product.getStock())
+                        .image(product.getImage())
+                        .tenant(ProductResponse.TenantInfo.builder()
+                                .id(product.getTenant().getId())
+                                .name(product.getTenant().getName())
+                                .build())
+                        .category(
+                                product.getCategory() != null
+                                        ? ProductResponse.CategoryInfo.builder()
+                                        .id(product.getCategory().getId())
+                                        .image(product.getCategory().getImage())
+                                        .name(product.getCategory().getName())
+                                        .build()
+                                        : null
+                        )
+                        .build()
+                );
+
+        return ResponseEntity.ok(
+                WebResponse.<Page<ProductResponse>>builder()
+                        .success(true)
+                        .data(page)
                         .build()
         );
     }

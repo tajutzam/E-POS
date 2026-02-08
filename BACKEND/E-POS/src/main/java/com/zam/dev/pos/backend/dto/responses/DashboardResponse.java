@@ -1,4 +1,4 @@
-package com.zam.dev.pos.backend.dto;
+package com.zam.dev.pos.backend.dto.responses;
 
 import lombok.Builder;
 import lombok.Data;
@@ -10,5 +10,6 @@ public class DashboardResponse {
     private long totalRevenue;
     private long orders;
     private long totalProduct;
+    private long productLowStock;
 
 }

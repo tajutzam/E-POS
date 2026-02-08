@@ -1,8 +1,8 @@
 package com.zam.dev.pos.backend.services.impl;
 
 
-import com.zam.dev.pos.backend.dto.ProductRequest;
-import com.zam.dev.pos.backend.dto.ProductResponse;
+import com.zam.dev.pos.backend.dto.requests.ProductRequest;
+import com.zam.dev.pos.backend.dto.responses.ProductResponse;
 import com.zam.dev.pos.backend.entities.Category;
 import com.zam.dev.pos.backend.entities.Product;
 import com.zam.dev.pos.backend.entities.Tenant;
@@ -49,6 +49,11 @@ public class ProductServiceImpl implements ProductService {
         } catch (IOException exception) {
             throw new RuntimeException(exception.getMessage());
         }
+    }
+
+    @Override
+    public long countByTenant(Tenant tenant) {
+        return this.productRepository.countByTenant(tenant);
     }
 
     @Override
@@ -118,5 +123,27 @@ public class ProductServiceImpl implements ProductService {
             FileUpload.deleteFile("uploads/products", product.getImage());
         }
         productRepository.delete(product);
+    }
+
+
+    @Override
+    public long countByStockLessAndTenant(Tenant tenant) {
+        return productRepository.countByStockLessThanAndTenant(5, tenant);
+    }
+
+    @Override
+    public Page<Product> findAllInCashier(Tenant tenant, String search, String categoryUuid, Pageable pageable) {
+
+        if (search != null && search.isBlank()) {
+            search = null;
+        }
+
+        if (categoryUuid != null && categoryUuid.isBlank()) {
+            categoryUuid = null;
+        }
+
+        return productRepository
+                .findAllInCashier(tenant, search, categoryUuid, pageable);
+
     }
 }

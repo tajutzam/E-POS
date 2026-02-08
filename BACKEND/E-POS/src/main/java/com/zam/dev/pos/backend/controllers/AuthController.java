@@ -1,15 +1,14 @@
 package com.zam.dev.pos.backend.controllers;
 
-import com.zam.dev.pos.backend.dto.AuthRequest;
-import com.zam.dev.pos.backend.dto.AuthResponse;
-import com.zam.dev.pos.backend.dto.WebResponse;
+import com.zam.dev.pos.backend.dto.requests.AuthRequest;
+import com.zam.dev.pos.backend.dto.responses.AuthResponse;
+import com.zam.dev.pos.backend.dto.responses.WebResponse;
 import com.zam.dev.pos.backend.entities.User;
 import com.zam.dev.pos.backend.services.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 

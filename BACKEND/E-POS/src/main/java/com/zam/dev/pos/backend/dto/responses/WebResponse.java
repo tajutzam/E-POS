@@ -1,4 +1,4 @@
-package com.zam.dev.pos.backend.dto;
+package com.zam.dev.pos.backend.dto.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

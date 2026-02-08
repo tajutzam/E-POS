@@ -1,8 +1,8 @@
 package com.zam.dev.pos.backend.services.impl;
 
 import com.zam.dev.pos.backend.configs.JwtService;
-import com.zam.dev.pos.backend.dto.AuthRequest;
-import com.zam.dev.pos.backend.dto.AuthResponse;
+import com.zam.dev.pos.backend.dto.requests.AuthRequest;
+import com.zam.dev.pos.backend.dto.responses.AuthResponse;
 import com.zam.dev.pos.backend.entities.Role;
 import com.zam.dev.pos.backend.entities.User;
 import com.zam.dev.pos.backend.repositories.UserRepository;

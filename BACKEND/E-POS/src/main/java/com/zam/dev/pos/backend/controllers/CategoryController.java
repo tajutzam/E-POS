@@ -1,8 +1,8 @@
 package com.zam.dev.pos.backend.controllers;
 
-import com.zam.dev.pos.backend.dto.CategoryRequest;
-import com.zam.dev.pos.backend.dto.CategoryResponse;
-import com.zam.dev.pos.backend.dto.WebResponse;
+import com.zam.dev.pos.backend.dto.requests.CategoryRequest;
+import com.zam.dev.pos.backend.dto.responses.CategoryResponse;
+import com.zam.dev.pos.backend.dto.responses.WebResponse;
 import com.zam.dev.pos.backend.entities.Category;
 import com.zam.dev.pos.backend.entities.User;
 import com.zam.dev.pos.backend.services.CategoryService;

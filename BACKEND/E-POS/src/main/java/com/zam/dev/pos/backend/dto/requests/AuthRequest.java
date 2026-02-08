@@ -1,4 +1,4 @@
-package com.zam.dev.pos.backend.dto;
+package com.zam.dev.pos.backend.dto.requests;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
